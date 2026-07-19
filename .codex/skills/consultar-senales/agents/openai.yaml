@@ -1,0 +1,4 @@
+interface:
+  display_name: "Consultar Senales"
+  short_description: "Consulta snapshots diarios de AI Radar"
+  default_prompt: "Use $consultar-senales to consultar las senales de AI Radar para una fecha y cantidad especificas."

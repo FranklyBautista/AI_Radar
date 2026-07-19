@@ -1,0 +1,4 @@
+interface:
+  display_name: "Desarrollo Frontend AI Radar"
+  short_description: "Desarrolla interfaces confiables para AI Radar"
+  default_prompt: "Use $desarrollo-frontend-airadar para implementar y validar una interfaz de AI Radar lista para revision."
