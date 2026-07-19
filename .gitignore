@@ -12,8 +12,12 @@ snapshots/weekly/
 config/sources.json
 frameio/
 recordings/
+tmp/airadar-frontend/
 *.log
 *.sqlite
 *.db
 *.pem
 *.key
+.vercel
+.env*
+!.env.example

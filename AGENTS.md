@@ -1,45 +1,45 @@
-# AI Radar Agent Guide
+# Guia de agentes de AI Radar
 
-AI Radar is the course project for learning Codex with a real product surface.
+AI Radar es el proyecto del curso para aprender Codex con una superficie de producto real.
 
-The current repository state is intentionally small. Treat the README as product direction, not as proof that the full system already exists.
+El estado actual del repositorio es intencionalmente pequeno. Trata el README como direccion de producto, no como prueba de que el sistema completo ya existe.
 
-## Current State
+## Estado actual
 
-- The project currently has a README and repository rules.
-- The implementation is built class by class.
-- Do not assume app files, scripts, databases, skills, deploy config, or automations exist until they are present in the repo.
+- El proyecto actualmente tiene un README y reglas del repositorio.
+- La implementacion se construye clase por clase.
+- No asumas que existen archivos de app, scripts, bases de datos, skills, configuracion de despliegue o automatizaciones hasta que esten presentes en el repo.
 
-## Product Direction
+## Direccion de producto
 
-AI Radar will collect AI news, papers, repos, tools, and launches, then turn them into verifiable signals for builders.
+AI Radar recopilara noticias, papers, repos, herramientas y lanzamientos de IA, y luego los convertira en senales verificables para builders.
 
-The final system should support:
+El sistema final debe soportar:
 
-- source evidence;
-- normalized signals;
-- duplicate detection;
+- evidencia de fuentes;
+- senales normalizadas;
+- deteccion de duplicados;
 - ranking;
-- practical action guides;
-- an operator view;
-- deploy and automation.
+- guias practicas de accion;
+- una vista de operador;
+- despliegue y automatizacion.
 
-## Working Rules
+## Reglas de trabajo
 
-- Inspect the repo before editing.
-- Keep changes scoped to the current class objective.
-- Prefer small, reproducible files over chat-only state.
-- Do not commit secrets, local caches, generated weekly snapshots, build output, videos, screenshots, or temporary reports.
-- When a class creates a reusable process, prefer a skill.
-- When a class creates deterministic work, prefer a tool or script.
-- When adding data examples, use fixtures or contracts unless the class explicitly requires a durable seed.
+- Inspecciona el repo antes de editar.
+- Manten los cambios limitados al objetivo de la clase actual.
+- Prefiere archivos pequenos y reproducibles en lugar de estado solo en el chat.
+- No hagas commit de secretos, caches locales, snapshots semanales generados, salida de build, videos, screenshots o reportes temporales.
+- Cuando una clase cree un proceso reutilizable, prefiere una skill.
+- Cuando una clase cree trabajo deterministico, prefiere una herramienta o script.
+- Cuando agregues ejemplos de datos, usa fixtures o contratos a menos que la clase requiera explicitamente una semilla durable.
 
-## Validation
+## Validacion
 
-For each class branch, leave a clear state:
+Para cada rama de clase, deja un estado claro:
 
-- what was added;
-- how to verify it;
-- what remains intentionally missing.
+- que se agrego;
+- como verificarlo;
+- que queda intencionalmente pendiente.
 
-If commands do not exist yet, do not invent them in docs as if they already work.
+Si los comandos aun no existen, no los inventes en la documentacion como si ya funcionaran.

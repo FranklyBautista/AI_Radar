@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0a0e12" />
+    <meta
+      name="description"
+      content="AI Radar convierte novedades de inteligencia artificial en señales verificables para builders."
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>AI Radar · Señales verificadas para builders</title>
+    <script type="module" src="./src/app.mjs"></script>
+  </head>
+  <body data-mode="reader">
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+
+    <div class="app-shell">
+      <aside class="sidebar" id="primary-navigation" aria-label="Navegación principal">
+        <a class="brand" href="#main-content" aria-label="AI Radar, ir al inicio">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span>AI Radar</span>
+        </a>
+
+        <nav class="nav-list" aria-label="Secciones">
+          <a class="nav-link is-active" href="#main-content" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">◎</span>
+            <span>Radar</span>
+          </a>
+          <a class="nav-link" href="#ranking">
+            <span class="nav-icon" aria-hidden="true">◌</span>
+            <span>Señales</span>
+          </a>
+          <a class="nav-link" href="#sources">
+            <span class="nav-icon" aria-hidden="true">▤</span>
+            <span>Fuentes</span>
+          </a>
+          <a class="nav-link" href="#saved-note">
+            <span class="nav-icon" aria-hidden="true">◇</span>
+            <span>Guardados</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a class="nav-link" href="#data-source-note">
+            <span class="nav-icon" aria-hidden="true">⚙</span>
+            <span>Ajustes</span>
+          </a>
+          <div class="profile">
+            <span class="avatar" aria-hidden="true">AR</span>
+            <span>
+              <strong>Ana Ruiz</strong>
+              <small>Operadora</small>
+            </span>
+          </div>
+        </div>
+      </aside>
+
+      <button class="nav-backdrop" type="button" aria-label="Cerrar navegación" tabindex="-1"></button>
+
+      <header class="topbar">
+        <button
+          class="icon-button mobile-menu-button"
+          type="button"
+          aria-label="Abrir navegación"
+          aria-controls="primary-navigation"
+          aria-expanded="false"
+        >
+          <span aria-hidden="true">☰</span>
+        </button>
+
+        <div class="mode-switch" aria-label="Modo de la aplicación">
+          <button class="mode-button" type="button" data-mode="reader" aria-pressed="true">
+            <span aria-hidden="true">▣</span>
+            Modo lector
+          </button>
+          <button class="mode-button" type="button" data-mode="operator" aria-pressed="false">
+            <span aria-hidden="true">☷</span>
+            Modo operador
+          </button>
+        </div>
+
+        <form class="search" role="search">
+          <label class="sr-only" for="signal-search">Buscar señales, fuentes o temas</label>
+          <span aria-hidden="true">⌕</span>
+          <input
+            id="signal-search"
+            name="q"
+            type="search"
+            autocomplete="off"
+            placeholder="Buscar señales, fuentes o temas…"
+          />
+          <kbd aria-hidden="true">/</kbd>
+        </form>
+
+        <button class="icon-button notification-button" type="button" aria-label="Notificaciones, ninguna nueva">
+          <span aria-hidden="true">♢</span>
+        </button>
+      </header>
+
+      <main id="main-content" tabindex="-1">
+        <section class="page-heading" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">Inteligencia curada</p>
+            <h1 id="page-title">Radar de hoy</h1>
+            <p>Señales verificadas para builders</p>
+          </div>
+          <div class="snapshot-meta">
+            <span class="source-badge" id="data-source-note">Supabase server-side</span>
+            <time id="snapshot-date" datetime="">Cargando fecha…</time>
+          </div>
+        </section>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-primary">
+            <section class="panel ranking-panel" id="ranking" aria-labelledby="ranking-title" aria-busy="true">
+              <div class="panel-heading ranking-heading">
+                <div>
+                  <p class="panel-kicker">Prioridad editorial</p>
+                  <h2 id="ranking-title">Ranking de señales</h2>
+                </div>
+                <span class="result-count" id="result-count">Cargando…</span>
+              </div>
+
+              <div class="ranking-columns" aria-hidden="true">
+                <span>#</span>
+                <span>Señal</span>
+                <span>Categoría</span>
+                <span>Puntuación</span>
+                <span>Estado</span>
+                <span>Fecha</span>
+              </div>
+
+              <div class="signal-list" id="signal-list">
+                <div class="skeleton-row" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <div class="skeleton-row" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <div class="skeleton-row" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel detail-panel" id="signal-detail" aria-labelledby="detail-title" hidden></section>
+          </div>
+
+          <aside class="panel operator-panel" aria-labelledby="operator-title">
+            <div class="panel-heading">
+              <p class="panel-kicker" id="operator-kicker">Vista previa</p>
+              <h2 id="operator-title">Modo operador</h2>
+              <p id="operator-description">Activa el modo operador para revisar y preparar señales.</p>
+            </div>
+
+            <div class="operator-actions" aria-describedby="operator-session-note">
+              <button type="button" class="operator-action" data-action="merge" disabled>
+                <span aria-hidden="true">⇄</span>
+                Fusionar duplicados
+              </button>
+              <button type="button" class="operator-action" data-action="adjust" disabled>
+                <span aria-hidden="true">↕</span>
+                Ajustar ranking
+              </button>
+              <button type="button" class="operator-action" data-action="edit" disabled>
+                <span aria-hidden="true">✎</span>
+                Editar señal
+              </button>
+              <button
+                type="button"
+                class="operator-action operator-action-primary"
+                data-action="publish"
+                aria-describedby="publish-note"
+                disabled
+              >
+                <span aria-hidden="true">➤</span>
+                Publicar
+              </button>
+            </div>
+
+            <div class="adjust-panel" id="adjust-panel" hidden>
+              <label for="score-adjustment">Ajuste local de puntuación</label>
+              <div>
+                <input id="score-adjustment" type="range" min="-10" max="10" step="1" value="0" />
+                <output id="score-adjustment-value" for="score-adjustment">0</output>
+              </div>
+            </div>
+
+            <p class="operator-feedback" id="operator-feedback" role="status" aria-live="polite"></p>
+            <div class="operator-queue" id="operator-queue" aria-label="Cola de señales"></div>
+
+            <div class="operator-notes">
+              <p id="operator-session-note">Los ajustes y ediciones viven solo en esta sesión.</p>
+              <p id="publish-note">Publicar requiere una API que todavía no existe en el repositorio.</p>
+            </div>
+          </aside>
+        </div>
+
+        <p class="saved-note" id="saved-note">
+          Guardados se incorporará cuando exista un contrato de persistencia de preferencias de usuario.
+        </p>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+    <dialog class="edit-dialog" id="edit-dialog" aria-labelledby="edit-dialog-title">
+      <form method="dialog" id="edit-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="panel-kicker">Borrador de sesión</p>
+            <h2 id="edit-dialog-title">Editar señal</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Cerrar edición">×</button>
+        </div>
+
+        <label for="edit-title">Título</label>
+        <input id="edit-title" name="titulo" required maxlength="140" />
+
+        <label for="edit-action">Acción sugerida</label>
+        <textarea id="edit-action" name="accion" rows="5" required maxlength="600"></textarea>
+
+        <label for="edit-status">Estado</label>
+        <select id="edit-status" name="estado">
+          <option value="nueva">Nueva</option>
+          <option value="activa">Activa</option>
+          <option value="accionable">Accionable</option>
+          <option value="en-seguimiento">En seguimiento</option>
+          <option value="en-observacion">En observación</option>
+        </select>
+
+        <p class="form-note">Este cambio no se envía al backend y se perderá al recargar.</p>
+
+        <div class="dialog-actions">
+          <button class="button button-secondary" type="button" data-close-dialog>Cancelar</button>
+          <button class="button button-primary" type="submit">Guardar borrador local</button>
+        </div>
+      </form>
+    </dialog>
+
+    <noscript>
+      <p class="noscript-message">AI Radar necesita JavaScript para cargar el snapshot y calcular el ranking.</p>
+    </noscript>
+  </body>
+</html>

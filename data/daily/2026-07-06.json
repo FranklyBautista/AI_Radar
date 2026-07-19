@@ -1,0 +1,87 @@
+{
+  "contract_version": "1.0.0",
+  "fecha": "2026-07-06",
+  "generado_en": "2026-07-06T00:00:00-04:00",
+  "busqueda": {
+    "consulta": "noticias recientes de inteligencia artificial",
+    "idioma": "es",
+    "criterio": "Cinco noticias recientes priorizadas por impacto practico para builders: regulacion, gobernanza, ciencia, infraestructura y geopolitica."
+  },
+  "senales": [
+    {
+      "id": "onu-armas-autonomas",
+      "titulo": "La ONU pide prohibir armas autonomas letales",
+      "fuente": {
+        "nombre": "The Wall Street Journal",
+        "url": "https://www.wsj.com/tech/ai/killer-robots-must-be-banned-u-n-secretary-general-says-00603020",
+        "fecha_publicacion": "2026-07-06"
+      },
+      "evidencia": "Antonio Guterres pidio en Ginebra una prohibicion legal internacional para sistemas que puedan seleccionar y matar objetivos sin control humano.",
+      "impacto": "Alto: aumenta la presion sobre proveedores de modelos, integradores de defensa y operadores que usan IA en decisiones criticas.",
+      "accion": "Monitorear si las conversaciones en Ginebra producen borradores, compromisos nacionales o restricciones sobre autonomia en sistemas militares.",
+      "estado": "activa",
+      "etiquetas": ["gobernanza", "defensa", "riesgo"],
+      "confianza": "media"
+    },
+    {
+      "id": "onu-ai-for-good-commission",
+      "titulo": "La ONU lanza la comision global AI for Good",
+      "fuente": {
+        "nombre": "Axios",
+        "url": "https://www.axios.com/2026/07/01/un-ai-commission-ceos-world-leaders",
+        "fecha_publicacion": "2026-07-01"
+      },
+      "evidencia": "La ONU y la ITU lanzaron una comision con lideres tecnologicos y politicos; la primera reunion esta prevista para el 8 de julio en Ginebra.",
+      "impacto": "Alto: puede convertirse en un foro de coordinacion para estrategias internacionales, estandares y legitimidad publica de IA.",
+      "accion": "Trackear miembros, agenda y primeros documentos; comparar sus recomendaciones con marcos de EE. UU., la Union Europea y Reino Unido.",
+      "estado": "en-seguimiento",
+      "etiquetas": ["gobernanza", "estandares", "onu"],
+      "confianza": "media"
+    },
+    {
+      "id": "fca-ia-financiera",
+      "titulo": "Reino Unido busca mas poder regulatorio sobre IA financiera",
+      "fuente": {
+        "nombre": "The Guardian",
+        "url": "https://www.theguardian.com/business/2026/jul/06/boost-city-regulators-powers-protect-uk-consumers-ai-cyber-crime-fraud-watchdog",
+        "fecha_publicacion": "2026-07-06"
+      },
+      "evidencia": "Una revision liderada por Sheldon Mills pidio reforzar los poderes de la FCA ante riesgos de IA en finanzas personales, fraude, ciberseguridad y terceros criticos.",
+      "impacto": "Alto: senal temprana de regulacion sectorial para agentes financieros, asesores con IA y proveedores de infraestructura usados por bancos.",
+      "accion": "Preparar checklist para productos AI-fintech: trazabilidad, supervision humana, limites de recomendacion, gestion de fraude y dependencia de terceros.",
+      "estado": "accionable",
+      "etiquetas": ["fintech", "regulacion", "agentes"],
+      "confianza": "media"
+    },
+    {
+      "id": "anthropic-claude-science",
+      "titulo": "Anthropic lanza Claude Science para investigacion y pharma",
+      "fuente": {
+        "nombre": "The Verge",
+        "url": "https://www.theverge.com/ai-artificial-intelligence/961311/anthropic-claude-science-ai-drug-development",
+        "fecha_publicacion": "2026-07-03"
+      },
+      "evidencia": "Anthropic lanzo Claude Science como workbench para investigacion cientifica y comunico planes para desarrollar farmacos propios.",
+      "impacto": "Medio-alto: muestra que los laboratorios de modelos estan verticalizando hacia ciencia, salud y descubrimiento de farmacos, no solo vendiendo APIs.",
+      "accion": "Evaluar oportunidades para herramientas auditables de investigacion con integraciones a PubMed, Jupyter, R, trazabilidad experimental y compliance biomedico.",
+      "estado": "nueva",
+      "etiquetas": ["ciencia", "salud", "biotech"],
+      "confianza": "media"
+    },
+    {
+      "id": "otan-ia-geopolitica",
+      "titulo": "La IA frontier entra en la agenda geopolitica de la OTAN",
+      "fuente": {
+        "nombre": "Times of India",
+        "url": "https://timesofindia.indiatimes.com/technology/tech-news/anthropic-and-openai-enter-natos-annual-summit-as-europe-is-tired-of-america-asking-it-to-wait/articleshow/132205286.cms",
+        "fecha_publicacion": "2026-07-06"
+      },
+      "evidencia": "La cumbre de la OTAN del 7 al 8 de julio incluye tensiones por dependencia europea de OpenAI y Anthropic y por capacidades propias como Mistral y Helsing.",
+      "impacto": "Alto: la IA se consolida como infraestructura estrategica y de defensa, con riesgos de dependencia, acceso restringido y compras soberanas.",
+      "accion": "Vigilar anuncios de soberania AI europea, compras de defensa, restricciones de acceso y alianzas entre gobiernos y proveedores locales.",
+      "estado": "en-observacion",
+      "etiquetas": ["geopolitica", "defensa", "infraestructura"],
+      "confianza": "baja"
+    }
+  ]
+}

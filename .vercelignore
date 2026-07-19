@@ -1,0 +1,16 @@
+.codex/
+.env
+.env.*
+.git/
+.vercel/
+AGENTS.md
+README.md
+config/
+contracts/
+data/
+docs/
+playwright.config.mjs
+scripts/
+supabase/
+tests/
+tmp/

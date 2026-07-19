@@ -1,0 +1,21 @@
+{
+  "name": "ai-radar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve_frontend.mjs",
+    "collect:the-batch": "node scripts/recopilar_the_batch.mjs",
+    "save:production": "node scripts/guardar_senales_produccion.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test:all": "npm test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1"
+  },
+  "dependencies": {
+    "jose": "^6.2.3"
+  }
+}

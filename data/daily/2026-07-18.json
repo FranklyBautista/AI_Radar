@@ -1,0 +1,87 @@
+{
+  "contract_version": "1.0.0",
+  "fecha": "2026-07-18",
+  "generado_en": "2026-07-18T22:11:52-04:00",
+  "busqueda": {
+    "consulta": "Busca las ultimas noticias de IA en paralelo",
+    "idioma": "es",
+    "criterio": "Cinco senales recientes priorizadas por impacto practico para builders a partir de 22 fuentes activas cargadas desde Notion y revisadas en paralelo por fuente oficial, repo tecnico, comunidad y medio secundario; The Batch se resolvio mediante su recolector canonico."
+  },
+  "senales": [
+    {
+      "id": "cohere-transcribe-arabic-open-source",
+      "titulo": "Cohere abre Transcribe Arabic para reconocimiento de voz multidialecto",
+      "fuente": {
+        "nombre": "Cohere Newsroom",
+        "url": "https://cohere.com/blog/transcribe-arabic",
+        "fecha_publicacion": "2026-07-07"
+      },
+      "evidencia": "Cohere publico Transcribe Arabic bajo Apache 2.0, con pesos descargables y acceso por API o Model Vault; reporta WER promedio 25.87 frente a 28.32 de OmniASR 7B-LLM y 36.86 de Whisper Large V3.",
+      "impacto": "Habilita transcripcion soberana de arabe, sus dialectos y audio bilingue arabe-ingles mediante pesos abiertos o despliegue alojado.",
+      "accion": "Evaluar WER, latencia y costo con audio propio por dialecto y code-switching antes de adoptar el modelo en produccion.",
+      "estado": "accionable",
+      "etiquetas": ["cohere", "audio", "asr", "arabe", "open-source"],
+      "confianza": "alta"
+    },
+    {
+      "id": "pytorch-triton-plugin-extensions-3-7",
+      "titulo": "PyTorch-Triton 3.7 permite extender el compilador sin mantener forks",
+      "fuente": {
+        "nombre": "PyTorch Blog",
+        "url": "https://pytorch.org/blog/triton-plugin-extensions-enabling-tlx-and-custom-compiler-passes-out-of-the-box/",
+        "fecha_publicacion": "2026-07-15"
+      },
+      "evidencia": "PyTorch-Triton 3.7 introduce plugins que cargan en runtime passes, dialectos y extensiones DSL sin recompilar Triton; TLX queda habilitado sobre upstream para backends NVIDIA y AMD.",
+      "impacto": "Reduce el costo de mantener forks de Triton y facilita optimizaciones de kernels especificas de hardware sin aislarse de upstream.",
+      "accion": "Probar un kernel representativo con y sin el plugin y validar compilacion, throughput, cache y compatibilidad antes de sustituir un fork.",
+      "estado": "accionable",
+      "etiquetas": ["pytorch", "triton", "compiladores", "gpu", "kernels"],
+      "confianza": "alta"
+    },
+    {
+      "id": "gemini-parallel-web-search-grounding",
+      "titulo": "Gemini Enterprise integra grounding con Parallel Web Search",
+      "fuente": {
+        "nombre": "Google Developers Blog - AI",
+        "url": "https://developers.googleblog.com/expanding-choice-in-gemini-enterprise-agent-platform-introducing-grounding-with-parallel-web-search/",
+        "fecha_publicacion": "2026-07-16"
+      },
+      "evidencia": "Google integro Parallel Web Search como proveedor nativo de grounding desde Gemini API, Agent Studio y Cloud Marketplace, con citas, extraccion, cache y opcion de cero retencion de datos.",
+      "impacto": "Permite construir agentes con busqueda web verificable y reutilizar resultados en arquitecturas multi-modelo y multiagente.",
+      "accion": "Ejecutar un piloto y medir cobertura, latencia, costo, calidad de citas y condiciones de retencion con consultas factuales propias.",
+      "estado": "accionable",
+      "etiquetas": ["gemini", "agentes", "busqueda", "grounding"],
+      "confianza": "alta"
+    },
+    {
+      "id": "hugging-face-incidente-agentes-autonomos",
+      "titulo": "Hugging Face divulga una intrusion operada por agentes autonomos",
+      "fuente": {
+        "nombre": "Hugging Face Blog",
+        "url": "https://huggingface.co/blog/security-incident-july-2026",
+        "fecha_publicacion": "2026-07-16"
+      },
+      "evidencia": "Un dataset malicioso abuso de un loader con ejecucion remota y una inyeccion de plantilla; el actor escalo a nodos, obtuvo credenciales y se movio entre clusters. Hugging Face recomienda rotar tokens.",
+      "impacto": "Confirma que los pipelines de ingestion de datasets son una superficie de ejecucion hostil y que los secretos accesibles desde workers elevan el impacto.",
+      "accion": "Rotar tokens, revisar actividad, aislar loaders sin secretos y bloquear ejecucion remota cuando no sea imprescindible.",
+      "estado": "accionable",
+      "etiquetas": ["seguridad", "agentes", "datasets", "supply-chain"],
+      "confianza": "alta"
+    },
+    {
+      "id": "ollama-0-32-1-agentes-mlx",
+      "titulo": "Ollama 0.32.1 estabiliza agentes Gemma 4 y corrige memoria en MLX",
+      "fuente": {
+        "nombre": "Ollama Releases",
+        "url": "https://github.com/ollama/ollama/releases/tag/v0.32.1",
+        "fecha_publicacion": "2026-07-16"
+      },
+      "evidencia": "La release mejora tool calling y continuaciones multi-turno de Gemma 4, y corrige una fuga recurrente de cache MLX que podia aumentar la memoria entre solicitudes.",
+      "impacto": "Mejora continuidad de herramientas y estabilidad de memoria en agentes locales de larga duracion, especialmente sobre Apple Silicon.",
+      "accion": "Probar conversaciones multi-turno con herramientas y medir memoria bajo carga prolongada antes de promover la version.",
+      "estado": "accionable",
+      "etiquetas": ["ollama", "agentes", "tool-calling", "mlx", "inferencia-local"],
+      "confianza": "alta"
+    }
+  ]
+}
