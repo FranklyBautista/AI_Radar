@@ -26,34 +26,40 @@
 
         <nav class="nav-list" aria-label="Secciones">
           <a class="nav-link is-active" href="#main-content" aria-current="page">
-            <span class="nav-icon" aria-hidden="true">◎</span>
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <circle cx="10" cy="10" r="7.25"></circle>
+                <circle cx="10" cy="10" r="3.25"></circle>
+                <path d="M10 10 15.2 5.6"></path>
+              </svg>
+            </span>
             <span>Radar</span>
           </a>
-          <a class="nav-link" href="#ranking">
-            <span class="nav-icon" aria-hidden="true">◌</span>
-            <span>Señales</span>
-          </a>
           <a class="nav-link" href="#sources">
-            <span class="nav-icon" aria-hidden="true">▤</span>
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+                <path d="M10 2.9 17.3 6.7 10 10.5 2.7 6.7Z"></path>
+                <path d="M2.7 10.6 10 14.4 17.3 10.6"></path>
+              </svg>
+            </span>
             <span>Fuentes</span>
-          </a>
-          <a class="nav-link" href="#saved-note">
-            <span class="nav-icon" aria-hidden="true">◇</span>
-            <span>Guardados</span>
           </a>
         </nav>
 
         <div class="sidebar-footer">
-          <a class="nav-link" href="#data-source-note">
-            <span class="nav-icon" aria-hidden="true">⚙</span>
-            <span>Ajustes</span>
-          </a>
           <div class="profile">
             <span class="avatar" aria-hidden="true">AR</span>
-            <span>
+            <span class="profile-name">
               <strong>Ana Ruiz</strong>
               <small>Operadora</small>
             </span>
+            <button class="icon-button settings-button" type="button" aria-label="Ajustes">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+                <path d="M3.6 6.4h12.8M3.6 13.6h12.8"></path>
+                <circle cx="8" cy="6.4" r="2.1" fill="var(--surface)"></circle>
+                <circle cx="12.6" cy="13.6" r="2.1" fill="var(--surface)"></circle>
+              </svg>
+            </button>
           </div>
         </div>
       </aside>
@@ -68,23 +74,17 @@
           aria-controls="primary-navigation"
           aria-expanded="false"
         >
-          <span aria-hidden="true">☰</span>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+            <path d="M3.4 5.5h13.2M3.4 10h13.2M3.4 14.5h13.2"></path>
+          </svg>
         </button>
-
-        <div class="mode-switch" aria-label="Modo de la aplicación">
-          <button class="mode-button" type="button" data-mode="reader" aria-pressed="true">
-            <span aria-hidden="true">▣</span>
-            Modo lector
-          </button>
-          <button class="mode-button" type="button" data-mode="operator" aria-pressed="false">
-            <span aria-hidden="true">☷</span>
-            Modo operador
-          </button>
-        </div>
 
         <form class="search" role="search">
           <label class="sr-only" for="signal-search">Buscar señales, fuentes o temas</label>
-          <span aria-hidden="true">⌕</span>
+          <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+            <circle cx="9" cy="9" r="5.4"></circle>
+            <path d="M13 13 17 17"></path>
+          </svg>
           <input
             id="signal-search"
             name="q"
@@ -95,78 +95,82 @@
           <kbd aria-hidden="true">/</kbd>
         </form>
 
-        <button class="icon-button notification-button" type="button" aria-label="Notificaciones, ninguna nueva">
-          <span aria-hidden="true">♢</span>
-        </button>
+        <div class="mode-switch" aria-label="Modo de la aplicación">
+          <button class="mode-button" type="button" data-mode="reader" aria-pressed="true">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3.6 4.6h4.1c1.3 0 2.3.9 2.3 2v8.8c0-.9-.9-1.6-2-1.6H3.6Z"></path>
+              <path d="M16.4 4.6h-4.1c-1.3 0-2.3.9-2.3 2v8.8c0-.9.9-1.6 2-1.6h4.4Z"></path>
+            </svg>
+            Modo lector
+          </button>
+          <button class="mode-button" type="button" data-mode="operator" aria-pressed="false">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+              <path d="M6.2 3.6v12.8M13.8 3.6v12.8"></path>
+              <circle cx="6.2" cy="8" r="2.1" fill="currentColor"></circle>
+              <circle cx="13.8" cy="12.4" r="2.1" fill="currentColor"></circle>
+            </svg>
+            Modo operador
+          </button>
+        </div>
       </header>
 
       <main id="main-content" tabindex="-1">
         <section class="page-heading" aria-labelledby="page-title">
-          <div>
-            <p class="eyebrow">Inteligencia curada</p>
-            <h1 id="page-title">Radar de hoy</h1>
-            <p>Señales verificadas para builders</p>
-          </div>
+          <h1 id="page-title">Radar de hoy</h1>
           <div class="snapshot-meta">
-            <span class="source-badge" id="data-source-note">Supabase server-side</span>
+            <span class="source-badge" id="data-source-note">Cargando origen…</span>
             <time id="snapshot-date" datetime="">Cargando fecha…</time>
           </div>
         </section>
 
         <div class="dashboard-grid">
-          <div class="dashboard-primary">
-            <section class="panel ranking-panel" id="ranking" aria-labelledby="ranking-title" aria-busy="true">
-              <div class="panel-heading ranking-heading">
-                <div>
-                  <p class="panel-kicker">Prioridad editorial</p>
-                  <h2 id="ranking-title">Ranking de señales</h2>
-                </div>
-                <span class="result-count" id="result-count">Cargando…</span>
-              </div>
-
-              <div class="ranking-columns" aria-hidden="true">
-                <span>#</span>
-                <span>Señal</span>
-                <span>Categoría</span>
-                <span>Puntuación</span>
-                <span>Estado</span>
-                <span>Fecha</span>
-              </div>
-
-              <div class="signal-list" id="signal-list">
-                <div class="skeleton-row" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span>
-                </div>
-                <div class="skeleton-row" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span>
-                </div>
-                <div class="skeleton-row" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span>
-                </div>
-              </div>
-            </section>
-
-            <section class="panel detail-panel" id="signal-detail" aria-labelledby="detail-title" hidden></section>
-          </div>
-
-          <aside class="panel operator-panel" aria-labelledby="operator-title">
-            <div class="panel-heading">
-              <p class="panel-kicker" id="operator-kicker">Vista previa</p>
-              <h2 id="operator-title">Modo operador</h2>
-              <p id="operator-description">Activa el modo operador para revisar y preparar señales.</p>
+          <section class="panel ranking-panel" id="ranking" aria-labelledby="ranking-title" aria-busy="true">
+            <div class="ranking-heading">
+              <h2 id="ranking-title" class="sr-only">Ranking de señales</h2>
+              <p class="ranking-summary">
+                <strong id="result-count">Cargando…</strong>
+                <span aria-hidden="true">· por prioridad</span>
+              </p>
             </div>
+
+            <div class="signal-list" id="signal-list">
+              <div class="skeleton-row" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="skeleton-row" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="skeleton-row" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel detail-panel" id="signal-detail" aria-labelledby="detail-title" hidden></section>
+
+        </div>
+
+        <div class="operator-home" hidden>
+          <div class="operator-controls" id="operator-controls">
+            <h2 id="operator-title">Controles de operación</h2>
 
             <div class="operator-actions" aria-describedby="operator-session-note">
               <button type="button" class="operator-action" data-action="merge" disabled>
-                <span aria-hidden="true">⇄</span>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3.4 6.6h9.4l-2.6-2.6M16.6 13.4H7.2l2.6 2.6"></path>
+                </svg>
                 Fusionar duplicados
               </button>
               <button type="button" class="operator-action" data-action="adjust" disabled>
-                <span aria-hidden="true">↕</span>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                  <path d="M10 3.6v12.8M6.2 7.4 10 3.6l3.8 3.8M6.2 12.6 10 16.4l3.8-3.8"></path>
+                </svg>
                 Ajustar ranking
               </button>
               <button type="button" class="operator-action" data-action="edit" disabled>
-                <span aria-hidden="true">✎</span>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M13.4 3.9 16.1 6.6 7.3 15.4H4.6v-2.7Z"></path>
+                </svg>
                 Editar señal
               </button>
               <button
@@ -176,7 +180,9 @@
                 aria-describedby="publish-note"
                 disabled
               >
-                <span aria-hidden="true">➤</span>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16.6 3.4 9.2 10.8M16.6 3.4l-4.8 13.2-2.6-5.8-5.8-2.6Z"></path>
+                </svg>
                 Publicar
               </button>
             </div>
@@ -190,18 +196,13 @@
             </div>
 
             <p class="operator-feedback" id="operator-feedback" role="status" aria-live="polite"></p>
-            <div class="operator-queue" id="operator-queue" aria-label="Cola de señales"></div>
 
-            <div class="operator-notes">
-              <p id="operator-session-note">Los ajustes y ediciones viven solo en esta sesión.</p>
-              <p id="publish-note">Publicar requiere una API que todavía no existe en el repositorio.</p>
-            </div>
-          </aside>
+            <p class="operator-notes">
+              <span id="operator-session-note">Los ajustes y ediciones viven solo en esta sesión.</span>
+              <span id="publish-note">Publicar requiere una API que todavía no existe en el repositorio.</span>
+            </p>
+          </div>
         </div>
-
-        <p class="saved-note" id="saved-note">
-          Guardados se incorporará cuando exista un contrato de persistencia de preferencias de usuario.
-        </p>
       </main>
     </div>
 
@@ -214,7 +215,11 @@
             <p class="panel-kicker">Borrador de sesión</p>
             <h2 id="edit-dialog-title">Editar señal</h2>
           </div>
-          <button class="icon-button" type="button" data-close-dialog aria-label="Cerrar edición">×</button>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Cerrar edición">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <path d="m5.6 5.6 8.8 8.8M14.4 5.6l-8.8 8.8"></path>
+            </svg>
+          </button>
         </div>
 
         <label for="edit-title">Título</label>

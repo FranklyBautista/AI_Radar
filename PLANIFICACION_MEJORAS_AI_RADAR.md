@@ -6,6 +6,9 @@ Marca una casilla como completada usando `[x]` cuando la tarea o fase haya sido 
 
 Transformar AI Radar en una pieza principal de portafolio para postular a cargos junior de backend o full-stack con énfasis en backend. El proyecto debe demostrar no solo que funciona, sino también capacidad para diseñar una arquitectura, proteger servicios, validar datos, automatizar procesos, probar el sistema y documentar decisiones técnicas.
 
+Las fases con letra (`2B`, `3B`) se insertaron después de la numeración
+original; van en la posición que indica su nombre y no alteran el resto.
+
 Esta planificación distingue entre:
 
 - **Mejoras esenciales:** necesarias antes de promocionar activamente el proyecto.
@@ -69,13 +72,13 @@ Al terminar las fases esenciales, el proyecto debe contar con:
 **Prioridad:** crítica  
 **Duración estimada:** 2–3 días
 
-- [ ] Fase 1 completada
+- [x] Fase 1 completada
 
 ### Tareas del README
 
 - [x] Sustituir la descripción centrada en el curso por una descripción centrada en el problema.
 - [x] Agregar una propuesta de valor de dos o tres líneas.
-- [ ] Incluir una captura principal o GIF del dashboard.
+- [x] Incluir una captura principal o GIF del dashboard.
 - [x] Agregar el enlace a la aplicación desplegada.
 - [x] Enumerar las funcionalidades realmente implementadas.
 - [x] Documentar el stack tecnológico y justificar brevemente las decisiones importantes.
@@ -86,6 +89,10 @@ Al terminar las fases esenciales, el proyecto debe contar con:
 - [x] Agregar una sección de seguridad.
 - [x] Agregar una sección de próximos pasos.
 - [x] Incorporar una sección “Decisiones y aprendizajes” que permita defender el proyecto en una entrevista.
+- [x] Añadir un archivo `LICENSE` y enlazarlo desde el README.
+
+Sin licencia, un repositorio público no autoriza legalmente a nadie a usarlo o
+bifurcarlo. Se publica bajo MIT.
 
 ### Documentación adicional
 
@@ -109,13 +116,13 @@ Al terminar las fases esenciales, el proyecto debe contar con:
 **Prioridad:** crítica  
 **Duración estimada:** 2–4 días
 
-- [ ] Fase 2 completada
+- [x] Fase 2 completada
 
 ### Tareas
 
 - [x] Verificar el despliegue del frontend y las funciones serverless.
-- [ ] Configurar correctamente las variables de producción.
-- [ ] Incorporar datos recientes suficientes para demostrar filtros, ranking y detalle.
+- [x] Configurar correctamente las variables de producción.
+- [x] Incorporar datos recientes suficientes para demostrar filtros, ranking y detalle.
 - [x] Implementar un modo demo basado en un snapshot local cuando Supabase esté vacío o no disponible.
 - [x] Identificar visualmente si los datos son en vivo o de demostración.
 - [x] Crear estados apropiados de carga, ausencia de datos, error y reintento.
@@ -125,10 +132,41 @@ Al terminar las fases esenciales, el proyecto debe contar con:
 
 ### Criterios de finalización
 
-- [ ] El enlace público abre sin configuración adicional.
-- [ ] Un fallo temporal de la fuente de datos no deja una pantalla rota.
-- [ ] El usuario puede explorar señales sin iniciar sesión.
-- [ ] La demo comunica claramente qué funcionalidades son persistentes.
+- [x] El enlace público abre sin configuración adicional.
+- [x] Un fallo temporal de la fuente de datos no deja una pantalla rota.
+- [x] El usuario puede explorar señales sin iniciar sesión.
+- [x] La demo comunica claramente qué funcionalidades son persistentes.
+
+## Fase 2B. Interfaz: claridad y densidad de información
+
+**Prioridad:** alta
+**Duración estimada:** 1–2 días
+
+- [x] Fase 2B completada
+
+La Fase 2 comprueba que la interfaz *funciona* en escritorio y móvil. Esta
+comprueba que se *entiende*, que es lo primero que juzga quien abre el enlace.
+
+### Tareas
+
+- [x] Retirar de la vista principal la información que no ayuda a decidir:
+      títulos duplicados, cabeceras de tabla para listas cortas, controles sin
+      nada detrás y avisos permanentes.
+- [x] Reducir a una sola línea meta la categoría, el estado y la fecha de cada
+      señal, en lugar de una columna por dato.
+- [x] Reservar el color de acento a un conjunto pequeño y declarado de usos.
+- [x] Sustituir los glifos unicode usados como iconos por SVG de trazo.
+- [x] Mostrar lista y detalle a la vez, sin desplazamiento, en escritorio.
+- [x] Ocultar los controles de operador cuando el modo no está activo, en vez
+      de mostrarlos deshabilitados.
+- [x] Eliminar la cola de operador, que repetía el ranking.
+
+### Criterios de finalización
+
+- [x] Ningún dato aparece dos veces en la misma pantalla sin motivo.
+- [x] No hay controles deshabilitados esperando en la vista por defecto.
+- [x] Las tres vistas (lector, operador, móvil) no desbordan horizontalmente.
+- [x] La suite E2E y la comprobación de accesibilidad siguen en verde.
 
 ## Fase 3. Integración continua y calidad
 
@@ -166,6 +204,40 @@ Al terminar las fases esenciales, el proyecto debe contar con:
 - [ ] Una regresión en el contrato, ranking o autorización bloquea la integración.
 - [ ] Los comandos documentados producen los mismos resultados localmente y en CI.
 
+## Fase 3B. Recolección programada
+
+**Prioridad:** crítica
+**Duración estimada:** 2–3 días
+
+- [ ] Fase 3B completada
+
+Hoy toda la recolección la dispara una persona ejecutando un script. Un radar
+cuya señal más reciente es del día en que se ejecutó el script a mano está
+muerto para quien abra el enlace dos meses después. Esta fase es la diferencia
+entre una demostración y algo que funciona solo, y ejercita de una vez casi todo
+lo que la Fase 4 quiere demostrar.
+
+Va después de la Fase 3 porque reutiliza el mismo GitHub Actions.
+
+### Tareas
+
+- [ ] Crear un workflow programado que ejecute el recolector y publique el
+      snapshot vía `POST /api/signals/save`.
+- [ ] Resolver la autenticación del workflow sin exponer secretos en logs.
+- [ ] Comprobar que reejecutar el mismo día no duplica el run.
+- [ ] Registrar el resultado de cada ejecución: fuentes consultadas, señales
+      obtenidas, duración y error.
+- [ ] Que un fallo de la fuente deje el snapshot anterior intacto y visible.
+- [ ] Mostrar en la interfaz la antigüedad del snapshot cuando supere un umbral.
+- [ ] Documentar en el README cada cuánto se actualiza el radar.
+
+### Criterios de finalización
+
+- [ ] El radar se actualiza sin intervención manual.
+- [ ] Una recolección fallida no deja la demo pública en blanco ni con datos
+      inventados.
+- [ ] La fecha visible en la interfaz corresponde a datos reales recientes.
+
 ## Fase 4. Fortalecimiento del backend
 
 **Prioridad:** alta  
@@ -173,19 +245,29 @@ Al terminar las fases esenciales, el proyecto debe contar con:
 
 - [ ] Fase 4 completada
 
-### Tareas
+### Tareas que cambian la conversación técnica
+
+`api/signals/save.js` tiene 294 líneas y concentra validación, autorización,
+dominio y transporte. Ese archivo es el que justifica esta fase.
 
 - [ ] Centralizar la validación para evitar contratos duplicados entre frontend y API.
 - [ ] Evaluar el uso del JSON Schema existente como fuente única de verdad.
 - [ ] Separar en capas la validación, dominio, persistencia y transporte HTTP.
-- [ ] Revisar la atomicidad del guardado de snapshots y documentar el uso de la función RPC.
 - [ ] Garantizar idempotencia al volver a procesar una misma ejecución.
-- [ ] Agregar paginación o límites explícitos al endpoint de consulta.
-- [ ] Incorporar filtros del lado del servidor por categoría, estado, confianza y fecha.
 - [ ] Definir errores de API con una estructura consistente: código, mensaje y detalles seguros.
-- [ ] Agregar identificadores de correlación para diagnosticar fallos sin revelar información sensible.
+- [ ] Revisar la atomicidad del guardado de snapshots y documentar el uso de la función RPC.
+
+### Tareas opcionales de esta fase
+
+Tienen sentido cuando exista volumen o tráfico que las justifique. Aplicarlas
+ahora, sobre cinco señales y un endpoint que nadie consume, es decorado: cuesta
+tiempo y no mejora la defensa del proyecto.
+
 - [ ] Revisar índices y restricciones de Supabase.
 - [ ] Aplicar límites de longitud y tamaño máximo de solicitud.
+- [ ] Agregar paginación o límites explícitos al endpoint de consulta.
+- [ ] Incorporar filtros del lado del servidor por categoría, estado, confianza y fecha.
+- [ ] Agregar identificadores de correlación para diagnosticar fallos sin revelar información sensible.
 - [ ] Evaluar rate limiting para el endpoint de escritura.
 
 ### Criterios de finalización
@@ -253,9 +335,14 @@ Estas mejoras aumentan la profundidad de AI Radar sin cambiar su propósito cent
 
 - [ ] Fase 7 completada
 
+**Depende de la Fase 6.** Hoy existe un único recolector
+(`scripts/recopilar_the_batch.mjs`). Deduplicar una sola fuente no encuentra
+casi nada, así que esta fase no se puede abordar sin la anterior: son dos
+fases de trabajo, no una.
+
 **Valor:** ataca directamente uno de los problemas principales del producto.
 
-- Normalizar títulos, dominios y URLs canónicas.
+- [ ] Normalizar títulos, dominios y URLs canónicas.
 - [ ] Detectar duplicados exactos mediante hashes.
 - [ ] Comparar similitud textual entre títulos y resúmenes.
 - [ ] Agrupar fuentes distintas que describan el mismo evento.
@@ -265,6 +352,11 @@ Estas mejoras aumentan la profundidad de AI Radar sin cambiar su propósito cent
 ## 8. Ranking explicable y configurable
 
 - [ ] Fase 8 completada
+
+**Función diferenciadora recomendada.** Funciona con una sola fuente, parte de
+`src/ranking.mjs`, que ya existe y está probado, y da mejor conversación
+técnica que la deduplicación: algoritmo versionado, desglose del puntaje y
+casos de prueba con resultado esperado.
 
 **Valor:** mejora la lógica de dominio y permite una buena discusión técnica.
 
@@ -399,11 +491,13 @@ La IA no debe asignar automáticamente una señal como confiable sin evidencia y
 
 ## Semana 2: confiabilidad y evidencia técnica
 
-- Completar Fase 2.
+- Completar Fase 2 y Fase 2B.
 - Implementar Fase 3.
+- Implementar Fase 3B reutilizando el workflow de la Fase 3.
 - Corregir errores detectados por pruebas E2E y accesibilidad.
 
-**Entrega:** demo estable con pruebas automáticas y CI visible.
+**Entrega:** demo estable, con pruebas automáticas, CI visible y datos que se
+renuevan sin intervención.
 
 ## Semana 3: backend defendible
 
@@ -417,9 +511,9 @@ La IA no debe asignar automáticamente una señal como confiable sin evidencia y
 
 - Completar Fase 5.
 - Elegir solamente una mejora recomendada de alto valor:
-  - múltiples fuentes;
-  - deduplicación y agrupación; o
-  - ranking explicable.
+  - ranking explicable (Fase 8, recomendada: no depende de nada más);
+  - múltiples fuentes (Fase 6); o
+  - deduplicación y agrupación (Fase 7, requiere antes la Fase 6).
 - Crear la release `v1.0.0`.
 
 **Entrega:** versión oficial para portafolio.
@@ -433,57 +527,13 @@ La IA no debe asignar automáticamente una señal como confiable sin evidencia y
 | P0 | README, despliegue, modo demo y seguridad de secretos | Determina la primera impresión y permite evaluar el proyecto |
 | P0 | CI y pruebas del recorrido principal | Demuestra confiabilidad y disciplina técnica |
 | P0 | Capturas, video y release | Facilita que un reclutador comprenda el resultado rápidamente |
+| P0 | Recolección programada | Sin ella el radar envejece y la demo pública deja de ser creíble |
 | P1 | Modularización del backend y contrato único | Fortalece tu perfil orientado a backend |
-| P1 | Deduplicación o ranking explicable | Diferencia AI Radar de un CRUD convencional |
-| P1 | Recolección de múltiples fuentes | Refuerza automatización e integración |
+| P1 | Ranking explicable | Diferencia AI Radar de un CRUD convencional sin depender de otras fases |
+| P1 | Recolección de múltiples fuentes | Refuerza automatización e integración; habilita la deduplicación |
 | P2 | Panel de operación y auditoría | Agrega un flujo empresarial completo |
 | P2 | Observabilidad y filtros avanzados | Acerca la app a prácticas de producción |
 | P3 | Usuarios, notificaciones, API pública e IA generativa | Expansión futura después de estabilizar el núcleo |
-
----
-
-# Backlog inicial sugerido
-
-## Épica A: Portfolio readiness
-
-- [ ] Reescribir el README.
-- [ ] Crear diagrama de arquitectura.
-- [ ] Agregar capturas y enlace público.
-- [ ] Documentar instalación y variables.
-- [ ] Preparar video de demostración.
-
-## Épica B: Calidad
-
-- [ ] Configurar GitHub Actions.
-- [ ] Incorporar linting y formato.
-- [ ] Ejecutar pruebas E2E en CI.
-- [ ] Ampliar cobertura de errores y límites.
-- [ ] Agregar badge de CI.
-
-## Épica C: Backend
-
-- [ ] Unificar validación de contratos.
-- [ ] Modularizar API y persistencia.
-- [ ] Verificar idempotencia.
-- [ ] Estandarizar errores.
-- [ ] Agregar filtros y paginación.
-- [ ] Revisar restricciones e índices.
-
-## Épica D: Diferenciación
-
-- [ ] Diseñar adaptadores de fuentes.
-- [ ] Implementar deduplicación exacta.
-- [ ] Implementar agrupación por similitud.
-- [ ] Desglosar el ranking por dimensiones.
-- [ ] Guardar versión del algoritmo.
-
-## Épica E: Operación
-
-- [ ] Crear autenticación de operador.
-- [ ] Persistir ediciones.
-- [ ] Implementar flujo de revisión y publicación.
-- [ ] Registrar auditoría.
-- [ ] Agregar logs estructurados y métricas básicas.
 
 ---
 
@@ -496,7 +546,10 @@ Una tarea se considera terminada cuando:
 - no expone secretos ni información interna;
 - contempla carga, error y ausencia de datos cuando corresponda;
 - la documentación afectada está actualizada;
-- pasa la integración continua;
+- pasa la integración continua, o la suite completa en local mientras la Fase 3
+  no esté terminada;
+- si se modificó una aserción de prueba, el commit declara si corrige una
+  regresión o registra un cambio intencional de comportamiento;
 - puede demostrarse desde la aplicación desplegada;
 - se integró mediante un commit descriptivo.
 
@@ -510,4 +563,17 @@ Para buscar empleo no es necesario implementar todas las mejoras opcionales. La 
 4. backend modular y seguro;
 5. una sola función diferenciadora bien terminada.
 
-La función diferenciadora recomendada es **deduplicación y agrupación de noticias**, seguida de un **ranking explicable**. Ambas se relacionan directamente con el problema central del producto y demuestran más criterio técnico que agregar autenticación, gráficos o funciones sociales sin una necesidad clara.
+La función diferenciadora recomendada es el **ranking explicable** (Fase 8):
+parte de código que ya existe y está probado, no depende de ninguna otra fase y
+permite defender decisiones de dominio en una entrevista. La **deduplicación y
+agrupación** es igual de valiosa conceptualmente, pero exige antes la
+recolección de múltiples fuentes, así que cuesta el doble.
+
+Ambas se relacionan con el problema central del producto y demuestran más
+criterio técnico que agregar autenticación, gráficos o funciones sociales sin
+una necesidad clara.
+
+Antes que cualquiera de las dos va la **recolección programada** (Fase 3B). No
+es una función diferenciadora, es lo que sostiene la credibilidad de todo lo
+demás: un radar desactualizado invalida la premisa del producto por muy buena
+que sea su arquitectura.

@@ -11,7 +11,7 @@ import {
   validateSnapshot,
 } from "../src/data-source.mjs";
 
-const snapshotPath = new URL("../data/daily/2026-07-18.json", import.meta.url);
+const snapshotPath = new URL("../data/daily/2026-08-24.json", import.meta.url);
 
 test("acepta el snapshot versionado usado por el frontend", async () => {
   const snapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
@@ -42,7 +42,7 @@ test("carga el contrato desde la API server-side declarada", async () => {
   });
   assert.equal(requestedUrl, "/api/signals/latest");
   assert.equal(DATA_SOURCE.kind, "api-supabase-server-side");
-  assert.equal(loaded.fecha, "2026-07-18");
+  assert.equal(loaded.fecha, "2026-08-24");
 });
 
 test("distingue la ausencia de runs de un error técnico", async () => {
@@ -69,7 +69,7 @@ test("usa el snapshot local claramente declarado si la API no está disponible",
     },
   });
 
-  assert.equal(loaded.fecha, "2026-07-18");
+  assert.equal(loaded.fecha, "2026-08-24");
   assert.deepEqual(requestedUrls, [DATA_SOURCE.url, DEMO_DATA_SOURCE.url]);
   assert.equal(sourceMeta.kind, "demo");
   assert.equal(sourceMeta.source, DEMO_DATA_SOURCE);

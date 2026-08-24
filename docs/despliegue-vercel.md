@@ -11,25 +11,11 @@
 ## Verificación pública
 
 - `GET /` responde `200` y entrega el dashboard público sin autenticación.
-- `GET /api/signals/latest` responde `500` con `{"error":"No se pudo cargar
-  el radar"}`. El endpoint no revela secretos ni el detalle interno del fallo.
-- La versión desplegada expone un fallback demo de solo lectura, por lo que el
-  dashboard permanece navegable si la lectura en vivo falla.
-
-## Estado de configuración pendiente
-
-No fue posible confirmar ni modificar las variables de producción desde esta
-sesión: el listado de entornos mediante Vercel CLI no devolvió resultado y no
-se alteraron credenciales. Para recuperar la lectura en vivo:
-
-1. En **Vercel → Settings → Environment Variables → Production**, confirmar
-   `SUPABASE_URL` y una de `SUPABASE_SECRET_KEY` o
-   `SUPABASE_SERVICE_ROLE_KEY`, sin espacios ni valores caducados.
-2. Confirmar que la clave conserva permisos de lectura sobre `airadar_runs`,
-   `airadar_signals` y la relación `airadar_sources`.
-3. Redesplegar y comprobar `GET /api/signals/latest`; debe responder `200` con
-   un snapshot que cumpla el contrato.
-
-Mientras el endpoint siga en `500`, la aplicación debe mostrar el rótulo
-**Demo local · fallback** y no presentarlo como información actualizada en
-Supabase.
+- `GET /api/signals/latest` responde `200` con el snapshot `2026-08-24`,
+  contrato `1.0.0` y cinco señales validadas.
+- La persistencia se verificó con Vercel OIDC: el run
+  `1bc2a800-6d79-4e6a-a278-0775f3abd9ca` guardó cinco señales y cinco fuentes
+  sin errores.
+- La versión desplegada conserva un fallback demo de solo lectura, por lo que
+  el dashboard permanece navegable si la lectura en vivo falla. La interfaz no
+  debe presentarlo como datos de Supabase en vivo.

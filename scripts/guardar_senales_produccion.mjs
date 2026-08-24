@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const VERCEL_VERSION = "56.3.2";
-const PRODUCTION_ENDPOINT = "https://ai-radar-tawny.vercel.app/api/signals/save";
+const PRODUCTION_ENDPOINT = "https://ai-radar-ten-omega.vercel.app/api/signals/save";
 
 function run(command, args, options) {
   return new Promise((resolveProcess, reject) => {

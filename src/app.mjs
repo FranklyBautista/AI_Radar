@@ -27,11 +27,8 @@ const elements = {
   search: document.querySelector("#signal-search"),
   searchForm: document.querySelector(".search"),
   modeButtons: [...document.querySelectorAll(".mode-button[data-mode]")],
-  operatorPanel: document.querySelector(".operator-panel"),
-  operatorKicker: document.querySelector("#operator-kicker"),
-  operatorTitle: document.querySelector("#operator-title"),
-  operatorDescription: document.querySelector("#operator-description"),
-  operatorQueue: document.querySelector("#operator-queue"),
+  operatorControls: document.querySelector("#operator-controls"),
+  operatorHome: document.querySelector(".operator-home"),
   operatorFeedback: document.querySelector("#operator-feedback"),
   operatorActions: [...document.querySelectorAll("[data-action]")],
   adjustPanel: document.querySelector("#adjust-panel"),
@@ -116,8 +113,10 @@ function signalRow(signal, index) {
   const category = escapeHtml(formatCategory(signal.etiquetas));
   const status = escapeHtml(formatStatus(signal.estado));
   const date = formatDate(signal.fuente.fecha_publicacion);
-  const adjustment = signal.scoreAdjustment
-    ? `, ajuste local ${signal.scoreAdjustment > 0 ? "+" : ""}${signal.scoreAdjustment}`
+  const delta = signal.scoreAdjustment;
+  const adjustment = delta ? `, ajuste local ${delta > 0 ? "+" : ""}${delta}` : "";
+  const deltaMark = delta
+    ? `<span class="score-delta">${delta > 0 ? "+" : ""}${delta}</span>`
     : "";
 
   return `
@@ -130,13 +129,10 @@ function signalRow(signal, index) {
     >
       <span class="rank-number" aria-hidden="true">${index + 1}</span>
       <span class="signal-main"><span class="signal-title">${title}</span></span>
-      <span class="category" aria-hidden="true">${category}</span>
-      <span class="score" title="${escapeHtml(RANKING_EXPLANATION)}" aria-hidden="true">${signal.score}</span>
-      <span class="status-pill" data-status="${escapeHtml(signal.estado)}" aria-hidden="true">${status}</span>
-      <span class="signal-date" aria-hidden="true">${date}</span>
-      <span class="signal-meta-mobile" aria-hidden="true">
-        <span>${category}</span>
+      <span class="score" title="${escapeHtml(RANKING_EXPLANATION)}" aria-hidden="true">${deltaMark}${signal.score}</span>
+      <span class="signal-meta" aria-hidden="true">
         <span class="status-pill" data-status="${escapeHtml(signal.estado)}">${status}</span>
+        <span>${category}</span>
         <span>${date}</span>
       </span>
     </button>`;
@@ -150,7 +146,7 @@ function renderRanking() {
   if (!signals.length) {
     elements.signalList.innerHTML = `
       <div class="empty-state">
-        <span aria-hidden="true">⌕</span>
+        <svg class="state-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.4"></circle><path d="M13 13 17 17"></path></svg>
         <h3>No encontramos señales</h3>
         <p>Prueba otro término o limpia la búsqueda para volver al radar completo.</p>
         <button class="button button-secondary" type="button" data-reset-search>Limpiar búsqueda</button>
@@ -168,84 +164,73 @@ function renderRanking() {
 function renderDetail() {
   const signal = selectedSignal();
   if (!signal || filteredSignals().length === 0) {
+    elements.operatorHome.append(elements.operatorControls);
     elements.detail.hidden = true;
+    placeOperatorControls();
     return;
   }
 
   const sourceUrl = safeSourceUrl(signal.fuente.url);
-  const tags = (signal.etiquetas ?? [])
-    .map((tag) => `<span class="tag" role="listitem">${escapeHtml(tag)}</span>`)
-    .join("");
+  const tags = (signal.etiquetas ?? []).map((tag) => escapeHtml(tag)).join(" · ");
+
+  // Los controles de operador viven dentro del detalle: hay que rescatarlos
+  // antes de reescribir el innerHTML o se destruyen con sus listeners.
+  elements.operatorHome.append(elements.operatorControls);
 
   elements.detail.innerHTML = `
     <div class="detail-header">
       <h2 id="detail-title">${escapeHtml(signal.titulo)}</h2>
-      <div class="detail-badges">
+      <p class="detail-meta">
         <span class="status-pill" data-status="${escapeHtml(signal.estado)}">${escapeHtml(formatStatus(signal.estado))}</span>
-        <span class="confidence-pill">${escapeHtml(formatConfidence(signal.confianza))}</span>
-      </div>
+        <span>${escapeHtml(formatConfidence(signal.confianza))}</span>
+        <span>${escapeHtml(signal.fuente.nombre)}</span>
+        <span>${escapeHtml(formatDate(signal.fuente.fecha_publicacion, { dateStyle: "long" }))}</span>
+      </p>
     </div>
-    <div class="detail-grid">
-      <section class="detail-section" aria-labelledby="impact-title">
+    <div class="detail-operator-slot"></div>
+    <div class="detail-body">
+      <section aria-labelledby="impact-title">
         <h3 id="impact-title">Por qué importa</h3>
         <p>${escapeHtml(signal.impacto)}</p>
-        <div class="action-block">
-          <h3>Acción sugerida</h3>
-          <p>${escapeHtml(signal.accion)}</p>
-        </div>
       </section>
-      <section class="detail-section" aria-labelledby="evidence-title">
-        <h3 id="evidence-title">Evidencia</h3>
-        <div class="evidence-card">
+      <section class="action-block" aria-labelledby="action-title">
+        <h3 id="action-title">Acción sugerida</h3>
+        <p>${escapeHtml(signal.accion)}</p>
+      </section>
+      <div class="detail-footer" id="sources">
+        <p class="source-line">
+          <svg class="evidence-check" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.8 10.2 3.5 3.5 6.9-7.4"></path></svg>
+          <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer noopener">
+            ${escapeHtml(sourceDomain(signal.fuente.url))}<span class="sr-only"> (abre en una pestaña nueva)</span>
+          </a>
+          <span>${escapeHtml(signal.fuente.nombre)}</span>
+        </p>
+        <details class="evidence">
+          <summary>Ver evidencia</summary>
           <p>${escapeHtml(signal.evidencia)}</p>
           <small>Evidencia reportada en el snapshot · contrato ${escapeHtml(state.snapshot.contract_version)}</small>
-        </div>
-        <div class="tag-list" role="list" aria-label="Etiquetas">${tags}</div>
-      </section>
-      <section class="detail-section" id="sources" aria-labelledby="sources-title">
-        <h3 id="sources-title">Fuente</h3>
-        <div class="source-card">
-          <div class="source-card-top">
-            <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer noopener">
-              ${escapeHtml(signal.fuente.nombre)} <span class="sr-only">(abre en una pestaña nueva)</span>
-            </a>
-            <span class="confidence-pill">${escapeHtml(signal.confianza ?? "sin dato")}</span>
-          </div>
-          <p class="source-domain">${escapeHtml(sourceDomain(signal.fuente.url))}</p>
-          <small>Publicado ${escapeHtml(formatDate(signal.fuente.fecha_publicacion, { dateStyle: "long" }))}</small>
-        </div>
-      </section>
+        </details>
+        <p class="tag-line">${tags}</p>
+      </div>
     </div>`;
   elements.detail.hidden = false;
+  placeOperatorControls();
 }
 
-function renderOperatorQueue() {
-  elements.operatorQueue.innerHTML = currentSignals()
-    .map(
-      (signal, index) => `
-        <button
-          type="button"
-          class="queue-row${signal.id === state.selectedId ? " is-selected" : ""}"
-          data-signal-id="${escapeHtml(signal.id)}"
-          aria-label="Seleccionar ${escapeHtml(signal.titulo)}, puesto ${index + 1}, puntuación ${signal.score}"
-        >
-          <span class="queue-rank" aria-hidden="true">${index + 1}</span>
-          <strong aria-hidden="true">${escapeHtml(signal.titulo)}</strong>
-          <span class="queue-score" aria-hidden="true">${signal.score}</span>
-        </button>`,
-    )
-    .join("");
+// La barra de operador es un nodo único que se mueve entre su casa fuera de
+// pantalla y el hueco dentro del detalle, para no perder sus listeners.
+function placeOperatorControls() {
+  const slot = elements.detail.hidden ? null : elements.detail.querySelector(".detail-operator-slot");
+  if (state.mode === "operator" && slot) {
+    slot.append(elements.operatorControls);
+  } else {
+    elements.operatorHome.append(elements.operatorControls);
+  }
 }
 
 function renderOperator() {
   const isOperator = state.mode === "operator";
   const hasSelection = Boolean(selectedSignal());
-  elements.operatorPanel.dataset.active = String(isOperator);
-  elements.operatorKicker.textContent = isOperator ? "Herramientas de sesión" : "Vista previa";
-  elements.operatorTitle.textContent = isOperator ? "Controles de operación" : "Modo operador";
-  elements.operatorDescription.textContent = isOperator
-    ? "Revisa el orden y prepara cambios locales sin fingir persistencia."
-    : "Activa el modo operador para revisar y preparar señales.";
 
   for (const action of elements.operatorActions) {
     const canUse = isOperator && hasSelection && action.dataset.action !== "publish";
@@ -261,7 +246,7 @@ function renderOperator() {
   elements.scoreAdjustment.value = String(adjustment);
   elements.scoreAdjustmentValue.value = String(adjustment);
   elements.scoreAdjustmentValue.textContent = adjustment > 0 ? `+${adjustment}` : String(adjustment);
-  renderOperatorQueue();
+  placeOperatorControls();
 }
 
 function renderDashboard() {
@@ -273,15 +258,17 @@ function renderDashboard() {
 function renderSourceBadge({ kind, source, reason } = {}) {
   if (kind === "demo") {
     elements.sourceBadge.dataset.source = "demo";
-    elements.sourceBadge.textContent = `Demo local · fallback · contrato ${source.contract_version ?? "1.0.0"}`;
-    elements.sourceBadge.title = `${source.url} · ${source.activation}. Motivo: ${reason}`;
+    elements.sourceBadge.textContent = "Demo local";
+    elements.sourceBadge.title =
+      `${source.url} · ${source.activation} · contrato ${source.contract_version ?? "1.0.0"}. Motivo: ${reason}`;
     return;
   }
 
   if (kind === "live") {
     elements.sourceBadge.dataset.source = "live";
-    elements.sourceBadge.textContent = `Supabase · en vivo · contrato ${source.contract_version ?? "1.0.0"}`;
-    elements.sourceBadge.title = `${source.url} · ${source.security}`;
+    elements.sourceBadge.textContent = "En vivo · Supabase";
+    elements.sourceBadge.title =
+      `${source.url} · ${source.security} · contrato ${source.contract_version ?? "1.0.0"}`;
     return;
   }
 
@@ -297,13 +284,13 @@ function renderError(error) {
   elements.resultCount.textContent = "Error de carga";
   elements.signalList.innerHTML = `
     <div class="error-state" role="alert">
-      <span aria-hidden="true">!</span>
+      <svg class="state-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.4"></circle><path d="M10 5.9v4.6M10 14.1h.01"></path></svg>
       <h3>No pudimos cargar las señales</h3>
       <p>${escapeHtml(error.message)}. La fuente declarada es ${escapeHtml(DATA_SOURCE.url)}.</p>
       <button class="button button-secondary" type="button" data-retry>Reintentar</button>
     </div>`;
+  elements.operatorHome.append(elements.operatorControls);
   elements.detail.hidden = true;
-  elements.operatorQueue.innerHTML = "";
   for (const action of elements.operatorActions) action.disabled = true;
 }
 
@@ -314,13 +301,13 @@ function renderNoSignals() {
   elements.resultCount.textContent = "0 señales";
   elements.signalList.innerHTML = `
     <div class="empty-state" role="status">
-      <span aria-hidden="true">⌕</span>
+      <svg class="state-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.4"></circle><path d="M13 13 17 17"></path></svg>
       <h3>Todavía no hay señales</h3>
       <p>Supabase aún no tiene un run completo para mostrar en el radar.</p>
       <button class="button button-secondary" type="button" data-retry>Reintentar</button>
     </div>`;
+  elements.operatorHome.append(elements.operatorControls);
   elements.detail.hidden = true;
-  elements.operatorQueue.innerHTML = "";
   for (const action of elements.operatorActions) action.disabled = true;
 }
 
@@ -435,11 +422,6 @@ elements.signalList.addEventListener("click", (event) => {
   if (event.target.closest("[data-retry]")) load();
 });
 
-elements.operatorQueue.addEventListener("click", (event) => {
-  const signal = event.target.closest("[data-signal-id]");
-  if (signal) selectSignal(signal.dataset.signalId);
-});
-
 elements.search.addEventListener("input", (event) => {
   state.query = event.target.value;
   renderDashboard();
@@ -460,9 +442,9 @@ elements.scoreAdjustment.addEventListener("input", (event) => {
   state.adjustments.set(state.selectedId, value);
   elements.scoreAdjustmentValue.value = String(value);
   elements.scoreAdjustmentValue.textContent = value > 0 ? `+${value}` : String(value);
+  // Solo el ranking: el detalle no depende de la puntuación y reconstruirlo
+  // movería el propio slider en el DOM, perdiendo el foco a mitad de arrastre.
   renderRanking();
-  renderDetail();
-  renderOperatorQueue();
 });
 
 elements.editForm.addEventListener("submit", (event) => {

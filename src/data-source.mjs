@@ -8,7 +8,7 @@ export const DATA_SOURCE = Object.freeze({
 
 export const DEMO_DATA_SOURCE = Object.freeze({
   kind: "local-demo-fallback",
-  url: "/data/daily/2026-07-18.json",
+  url: "/data/daily/2026-08-24.json",
   contract: "./contracts/ai-radar-signal.schema.json",
   activation:
     "snapshot local de solo lectura cuando la API no responde, no tiene runs o devuelve datos inválidos",

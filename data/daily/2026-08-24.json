@@ -1,0 +1,87 @@
+{
+  "contract_version": "1.0.0",
+  "fecha": "2026-08-24",
+  "generado_en": "2026-08-24T17:54:40-04:00",
+  "busqueda": {
+    "consulta": "Novedades de IA verificadas en fuentes activas de AI Radar",
+    "idioma": "es",
+    "criterio": "Cinco señales priorizadas por impacto práctico para builders, a partir de las 22 fuentes con Estado=Listo en Notion. Se priorizaron anuncios oficiales y publicaciones técnicas recientes; las métricas de proveedores se conservan como afirmaciones por validar en entornos propios."
+  },
+  "senales": [
+    {
+      "id": "openai-zdr-private-safety-processing",
+      "titulo": "OpenAI presenta procesamiento de seguridad compatible con Zero Data Retention",
+      "fuente": {
+        "nombre": "OpenAI News",
+        "url": "https://openai.com/index/offering-zero-data-retention-for-frontier-models/",
+        "fecha_publicacion": "2026-08-19"
+      },
+      "evidencia": "OpenAI anunció una vista previa de Private Safety Processing para detectar patrones de riesgo entre interacciones sin que su personal acceda a prompts o respuestas de clientes elegibles con Zero Data Retention.",
+      "impacto": "Abre una alternativa para productos con datos sensibles que necesitan combinar controles de seguridad y requisitos estrictos de retención.",
+      "accion": "Revisar elegibilidad, ubicación de datos, gestión de claves, señales de seguridad y el futuro white paper antes de diseñar un flujo que dependa de esta vista previa.",
+      "estado": "en-seguimiento",
+      "etiquetas": ["openai", "privacidad", "seguridad", "api", "enterprise"],
+      "confianza": "alta"
+    },
+    {
+      "id": "gemini-3-7-flash-api-model-card",
+      "titulo": "Gemini 3.7 Flash llega con controles de razonamiento y contexto de hasta un millón de tokens",
+      "fuente": {
+        "nombre": "Google DeepMind News",
+        "url": "https://deepmind.google/models/model-cards/gemini-3-7-flash/",
+        "fecha_publicacion": "2026-08-13"
+      },
+      "evidencia": "La model card de Google describe Gemini 3.7 Flash con configuraciones de pensamiento ajustables, entradas multimodales, ventana de contexto de hasta 1M de tokens y distribución mediante Gemini API y AI Studio.",
+      "impacto": "Da a equipos de producto una opción para comparar calidad, coste y latencia en flujos de agentes, código y documentos extensos.",
+      "accion": "Correr un benchmark propio con tareas reales de tool calling, contexto largo y seguridad; medir coste, latencia p95, tasa de éxito y alucinaciones antes de sustituir un modelo actual.",
+      "estado": "accionable",
+      "etiquetas": ["gemini", "api", "agentes", "contexto-largo", "multimodal"],
+      "confianza": "alta"
+    },
+    {
+      "id": "nvidia-security-runtime-agent-stack",
+      "titulo": "NVIDIA recomienda situar la autoridad de seguridad de agentes por debajo del harness",
+      "fuente": {
+        "nombre": "NVIDIA Technical Blog",
+        "url": "https://developer.nvidia.com/blog/where-security-fits-in-an-ai-agent-stack/",
+        "fecha_publicacion": "2026-08-21"
+      },
+      "evidencia": "El análisis distingue controles conductuales de controles de infraestructura y propone aplicar privilegio mínimo, aislamiento, acceso just-in-time, autorización explícita y auditoría en el runtime y la infraestructura.",
+      "impacto": "Refuerza que prompts y lógica del agente no son una frontera de seguridad suficiente cuando un agente puede ejecutar herramientas o tocar sistemas internos.",
+      "accion": "Auditar cada herramienta del agente: identidad, permisos mínimos, aprobación para acciones sensibles, aislamiento, límites de red y registro de auditoría independiente del modelo.",
+      "estado": "accionable",
+      "etiquetas": ["seguridad", "agentes", "runtime", "autorizacion", "observabilidad"],
+      "confianza": "alta"
+    },
+    {
+      "id": "nvidia-agentx-perf-watt-rubin-blackwell",
+      "titulo": "NVIDIA propone AgentX para medir inferencia agéntica por rendimiento energético",
+      "fuente": {
+        "nombre": "NVIDIA Technical Blog",
+        "url": "https://developer.nvidia.com/blog/nvidia-vera-rubin-and-blackwell-set-a-new-standard-for-agentic-ai-performance-per-watt/",
+        "fecha_publicacion": "2026-08-24"
+      },
+      "evidencia": "NVIDIA describe AgentX como un benchmark de sesiones de agentes de código que incorpora prefill de contexto largo, reutilización de KV cache, pausas de herramientas y concurrencia; publica resultados de Vera Rubin y Blackwell que deben interpretarse como cifras del proveedor.",
+      "impacto": "El coste de servir agentes depende de patrones de sesión y energía, no solo de tokens por segundo o FLOPS de un acelerador.",
+      "accion": "Añadir a los benchmarks internos escenarios de agentes con herramientas, cache, contexto largo y concurrencia; comparar tokens útiles, latencia, coste y consumo, sin extrapolar cifras de proveedor.",
+      "estado": "en-observacion",
+      "etiquetas": ["nvidia", "inferencia", "agentes", "benchmark", "energia"],
+      "confianza": "media"
+    },
+    {
+      "id": "pytorch-executorch-muse-glimmer-on-device",
+      "titulo": "ExecuTorch añade soporte de punta a punta para agentes locales con Muse Glimmer",
+      "fuente": {
+        "nombre": "PyTorch Blog",
+        "url": "https://pytorch.org/blog/fast-ondevice-agentic-ai-with-executorch/",
+        "fecha_publicacion": "2026-08-10"
+      },
+      "evidencia": "El equipo de ExecuTorch comunica soporte para Muse Glimmer, un modelo abierto de 30B parámetros, con artefactos para NVIDIA CUDA y Apple Silicon, entradas de texto e imagen, exportación GGUF y decodificación especulativa.",
+      "impacto": "Ofrece una vía concreta para evaluar agentes multimodales locales cuando privacidad, coste por petición o conectividad hacen inviable depender solo de una API alojada.",
+      "accion": "Probar los artefactos publicados con una tarea acotada en el hardware objetivo; medir memoria, tiempo de arranque, latencia, calidad de tool use y límites operativos antes de adoptar el runtime.",
+      "estado": "accionable",
+      "etiquetas": ["pytorch", "executorch", "on-device", "agentes", "open-source"],
+      "confianza": "alta"
+    }
+  ]
+}

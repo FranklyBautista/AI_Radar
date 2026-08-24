@@ -6,14 +6,14 @@ import { expect, test } from "@playwright/test";
 
 const evidenceDir = resolve("tmp/airadar-frontend");
 const latestApiPattern = "**/api/signals/latest";
-const demoSnapshotPattern = "**/data/daily/2026-07-18.json";
+const demoSnapshotPattern = "**/data/daily/2026-08-24.json";
 let declaredSnapshotFixture;
 
 test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async () => {
   await mkdir(evidenceDir, { recursive: true });
-  declaredSnapshotFixture = await readFile(resolve("data/daily/2026-07-18.json"), "utf8");
+  declaredSnapshotFixture = await readFile(resolve("data/daily/2026-08-24.json"), "utf8");
 });
 
 test.beforeEach(async ({ page }) => {
@@ -54,14 +54,15 @@ test("modo lector desktop: datos, teclado, vacío y captura", async ({ page }) =
   await expect(page.getByRole("heading", { name: "Radar de hoy" })).toBeVisible();
   await expect(page.locator(".signal-row")).toHaveCount(5);
   await expect(page.locator(".signal-row").first()).toHaveAttribute("aria-current", "true");
-  await expect(page.locator("#data-source-note")).toContainText("Supabase · en vivo · contrato 1.0.0");
-  await expect(page.locator("#snapshot-date")).toHaveAttribute("datetime", "2026-07-18");
+  await expect(page.locator("#data-source-note")).toHaveText("En vivo · Supabase");
+  await expect(page.locator("#data-source-note")).toHaveAttribute("title", /contrato 1\.0\.0/);
+  await expect(page.locator("#snapshot-date")).toHaveAttribute("datetime", "2026-08-24");
   await expect(
     page.locator("#signal-list").getByText(
-      "Cohere abre Transcribe Arabic para reconocimiento de voz multidialecto",
+      "Gemini 3.7 Flash llega con controles de razonamiento y contexto de hasta un millón de tokens",
     ),
   ).toBeVisible();
-  await expect(page.getByRole("button", { name: /Publicar/ })).toBeDisabled();
+  await expect(page.locator("#operator-controls")).toBeHidden();
 
   await page.keyboard.press("Tab");
   await expect(page.locator(".skip-link")).toBeFocused();
@@ -181,6 +182,7 @@ test("sin runs: usa el snapshot demo y comunica el origen de los datos", async (
   });
 
   await page.goto("/");
-  await expect(page.locator("#data-source-note")).toContainText("Demo local · fallback · contrato 1.0.0");
+  await expect(page.locator("#data-source-note")).toHaveText("Demo local");
+  await expect(page.locator("#data-source-note")).toHaveAttribute("title", /contrato 1\.0\.0/);
   await expect(page.locator(".signal-row")).toHaveCount(5);
 });

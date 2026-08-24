@@ -9,6 +9,10 @@ la pena probar.
 > artificial para convertir información dispersa en señales accionables
 > respaldadas por fuentes.
 
+![Dashboard de AI Radar: ranking de cinco señales a la izquierda y el detalle de
+la señal seleccionada a la derecha, con impacto, acción sugerida y
+fuente.](docs/img/dashboard.png)
+
 ## Estado del proyecto
 
 AI Radar tiene una demo funcional en construcción, con frontend estático,
@@ -56,12 +60,28 @@ estructura cada novedad para responder:
 - [Demo desplegada en Vercel](https://ai-radar-ten-omega.vercel.app/)
 - [Estado y límites del despliegue](docs/despliegue-vercel.md)
 
-La URL pública se verificó el 24 de agosto de 2026. El frontend responde sin
-configuración adicional y el fallback demo permite explorar el producto cuando
-la lectura de Supabase falla. El endpoint de datos en vivo sigue devolviendo
-`500`; consulta el diagnóstico y los pasos de corrección en
+La URL pública se verificó el 24 de agosto de 2026. El frontend y
+`GET /api/signals/latest` responden sin configuración adicional; este último
+entrega el snapshot en vivo más reciente desde Supabase. El fallback demo
+permanece disponible para fallos temporales y se identifica visualmente.
+Consulta el registro de despliegue en
 [`docs/despliegue-vercel.md`](docs/despliegue-vercel.md). La grabación de
-recorrido de la demo se guarda fuera de control de versiones en `recordings/`.
+recorrido de la demo se guarda fuera de control de versiones en `recordings/`;
+las capturas de esta sección sí están versionadas en `docs/img/`.
+
+### Modo operador
+
+Las acciones de revisión se aplican sobre la señal seleccionada y solo aparecen
+con el modo activo. Los cambios son locales a la sesión y la interfaz lo declara.
+
+![Modo operador: barra de controles dentro del detalle con las acciones
+Fusionar, Ajustar, Editar y Publicar, y el ajuste local de puntuación
+abierto.](docs/img/modo-operador.png)
+
+### Móvil
+
+<img src="docs/img/movil.png" alt="Vista móvil de 390 px: buscador, encabezado y
+la lista de señales con título, estado, categoría y fecha." width="320">
 
 ## Arquitectura
 
@@ -149,12 +169,12 @@ entrar al frontend ni committearse.
 | `npm run test:e2e` | Ejecuta el recorrido E2E con Playwright. |
 | `npm run test:all` | Ejecuta las suites unitarias y E2E. |
 | `npm run collect:the-batch` | Lee y evalúa la portada de The Batch. |
-| `npm run save:production -- data/daily/2026-07-18.json` | Guarda un snapshot usando el flujo OIDC temporal de Vercel. |
+| `npm run save:production -- data/daily/2026-08-24.json` | Guarda un snapshot usando el flujo OIDC temporal de Vercel. |
 
 Para consultar snapshots locales:
 
 ```bash
-python3 scripts/consultar_senales.py --dia 2026-07-18 --cantidad 5 --orden impacto
+python3 scripts/consultar_senales.py --dia 2026-08-24 --cantidad 5 --orden impacto
 ```
 
 La persistencia y sus variables están documentadas en
@@ -199,15 +219,17 @@ impacto, acción y estado; confianza y etiquetas son opcionales.
 
 ## Pendientes conocidos
 
-- Corregir la configuración o conectividad de Supabase en producción para que
-  `GET /api/signals/latest` responda datos en vivo.
-- Renovar el snapshot demo: el actual es del 18 de julio de 2026 y solo sirve
-  para demostrar la interfaz hasta cargar señales recientes verificadas.
+- Renovar periódicamente el snapshot en vivo y el fallback demo con señales
+  verificadas desde el registro de fuentes en Notion.
 - Crear CI con GitHub Actions, linting y formato.
 - Unificar validadores para que el JSON Schema sea la fuente única de verdad.
 - Persistir el flujo de operador y agregar autenticación editorial.
 - Implementar deduplicación y agrupación reales.
 - Renovar la grabación de demostración cuando haya señales recientes en vivo.
+
+## Licencia
+
+Publicado bajo licencia MIT. Consulta [`LICENSE`](LICENSE).
 
 ## Contribuir
 
