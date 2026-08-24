@@ -6,6 +6,7 @@ import { expect, test } from "@playwright/test";
 
 const evidenceDir = resolve("tmp/airadar-frontend");
 const latestApiPattern = "**/api/signals/latest";
+const demoSnapshotPattern = "**/data/daily/2026-07-18.json";
 let declaredSnapshotFixture;
 
 test.describe.configure({ mode: "serial" });
@@ -53,7 +54,7 @@ test("modo lector desktop: datos, teclado, vacío y captura", async ({ page }) =
   await expect(page.getByRole("heading", { name: "Radar de hoy" })).toBeVisible();
   await expect(page.locator(".signal-row")).toHaveCount(5);
   await expect(page.locator(".signal-row").first()).toHaveAttribute("aria-current", "true");
-  await expect(page.locator("#data-source-note")).toContainText("Supabase · contrato 1.0.0");
+  await expect(page.locator("#data-source-note")).toContainText("Supabase · en vivo · contrato 1.0.0");
   await expect(page.locator("#snapshot-date")).toHaveAttribute("datetime", "2026-07-18");
   await expect(
     page.locator("#signal-list").getByText(
@@ -136,15 +137,23 @@ test("mobile: layout sin overflow, navegación y accesibilidad", async ({ page }
 
 test("error de datos: informa la fuente y permite reintentar", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  let attempts = 0;
+  let primaryAttempts = 0;
+  let demoAttempts = 0;
   await page.route(latestApiPattern, (route) => {
-    attempts += 1;
-    if (attempts === 1) {
+    primaryAttempts += 1;
+    if (primaryAttempts === 1) {
       return route.fulfill({
         status: 503,
         contentType: "application/json",
         body: '{"error":"temporal"}',
       });
+    }
+    return route.fallback();
+  });
+  await page.route(demoSnapshotPattern, (route) => {
+    demoAttempts += 1;
+    if (demoAttempts === 1) {
+      return route.fulfill({ status: 503, contentType: "application/json", body: "{}" });
     }
     return route.fallback();
   });
@@ -157,7 +166,7 @@ test("error de datos: informa la fuente y permite reintentar", async ({ page }) 
   await expect(page.locator(".signal-row")).toHaveCount(5);
 });
 
-test("sin runs: presenta un estado vacío y permite reintentar", async ({ page }) => {
+test("sin runs: usa el snapshot demo y comunica el origen de los datos", async ({ page }) => {
   let attempts = 0;
   await page.route(latestApiPattern, (route) => {
     attempts += 1;
@@ -172,7 +181,6 @@ test("sin runs: presenta un estado vacío y permite reintentar", async ({ page }
   });
 
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Todavía no hay señales" })).toBeVisible();
-  await page.getByRole("button", { name: "Reintentar" }).click();
+  await expect(page.locator("#data-source-note")).toContainText("Demo local · fallback · contrato 1.0.0");
   await expect(page.locator(".signal-row")).toHaveCount(5);
 });

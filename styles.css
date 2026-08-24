@@ -439,6 +439,18 @@ main {
   color: var(--lime);
 }
 
+.source-badge[data-source="demo"] {
+  border-color: rgb(246 184 20 / 38%);
+  background: rgb(246 184 20 / 9%);
+  color: #f7c339;
+}
+
+.source-badge[data-source="unavailable"] {
+  border-color: rgb(255 109 85 / 38%);
+  background: rgb(255 109 85 / 9%);
+  color: #ff927f;
+}
+
 .dashboard-grid {
   display: grid;
   max-width: 1480px;

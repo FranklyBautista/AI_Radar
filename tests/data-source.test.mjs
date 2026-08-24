@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   DATA_SOURCE,
+  DEMO_DATA_SOURCE,
   DataContractError,
   NoSignalsError,
   loadSnapshot,
@@ -49,4 +50,28 @@ test("distingue la ausencia de runs de un error técnico", async () => {
     loadSnapshot({ fetchImpl: async () => new Response("{}", { status: 404 }) }),
     NoSignalsError,
   );
+});
+
+test("usa el snapshot local claramente declarado si la API no está disponible", async () => {
+  const snapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
+  const requestedUrls = [];
+  let sourceMeta;
+
+  const loaded = await loadSnapshot({
+    allowDemoFallback: true,
+    fetchImpl: async (url) => {
+      requestedUrls.push(url);
+      if (url === DATA_SOURCE.url) return new Response("{}", { status: 503 });
+      return new Response(JSON.stringify(snapshot), { status: 200 });
+    },
+    onSource: (meta) => {
+      sourceMeta = meta;
+    },
+  });
+
+  assert.equal(loaded.fecha, "2026-07-18");
+  assert.deepEqual(requestedUrls, [DATA_SOURCE.url, DEMO_DATA_SOURCE.url]);
+  assert.equal(sourceMeta.kind, "demo");
+  assert.equal(sourceMeta.source, DEMO_DATA_SOURCE);
+  assert.match(sourceMeta.reason, /503/);
 });

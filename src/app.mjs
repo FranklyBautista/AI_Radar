@@ -174,7 +174,7 @@ function renderDetail() {
 
   const sourceUrl = safeSourceUrl(signal.fuente.url);
   const tags = (signal.etiquetas ?? [])
-    .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+    .map((tag) => `<span class="tag" role="listitem">${escapeHtml(tag)}</span>`)
     .join("");
 
   elements.detail.innerHTML = `
@@ -200,7 +200,7 @@ function renderDetail() {
           <p>${escapeHtml(signal.evidencia)}</p>
           <small>Evidencia reportada en el snapshot · contrato ${escapeHtml(state.snapshot.contract_version)}</small>
         </div>
-        <div class="tag-list" aria-label="Etiquetas">${tags}</div>
+        <div class="tag-list" role="list" aria-label="Etiquetas">${tags}</div>
       </section>
       <section class="detail-section" id="sources" aria-labelledby="sources-title">
         <h3 id="sources-title">Fuente</h3>
@@ -270,8 +270,29 @@ function renderDashboard() {
   renderOperator();
 }
 
+function renderSourceBadge({ kind, source, reason } = {}) {
+  if (kind === "demo") {
+    elements.sourceBadge.dataset.source = "demo";
+    elements.sourceBadge.textContent = `Demo local · fallback · contrato ${source.contract_version ?? "1.0.0"}`;
+    elements.sourceBadge.title = `${source.url} · ${source.activation}. Motivo: ${reason}`;
+    return;
+  }
+
+  if (kind === "live") {
+    elements.sourceBadge.dataset.source = "live";
+    elements.sourceBadge.textContent = `Supabase · en vivo · contrato ${source.contract_version ?? "1.0.0"}`;
+    elements.sourceBadge.title = `${source.url} · ${source.security}`;
+    return;
+  }
+
+  elements.sourceBadge.dataset.source = "unavailable";
+  elements.sourceBadge.textContent = "Fuente no disponible";
+  elements.sourceBadge.title = DATA_SOURCE.url;
+}
+
 function renderError(error) {
   state.phase = "error";
+  renderSourceBadge();
   elements.rankingPanel.setAttribute("aria-busy", "false");
   elements.resultCount.textContent = "Error de carga";
   elements.signalList.innerHTML = `
@@ -288,6 +309,7 @@ function renderError(error) {
 
 function renderNoSignals() {
   state.phase = "empty";
+  renderSourceBadge();
   elements.rankingPanel.setAttribute("aria-busy", "false");
   elements.resultCount.textContent = "0 señales";
   elements.signalList.innerHTML = `
@@ -368,15 +390,23 @@ function handleOperatorAction(action) {
 async function load() {
   state.phase = "loading";
   elements.rankingPanel.setAttribute("aria-busy", "true");
+  let sourceMeta;
   try {
-    const snapshot = await loadSnapshot();
+    const snapshot = await loadSnapshot({
+      allowDemoFallback: true,
+      onSource: (meta) => {
+        sourceMeta = meta;
+      },
+    });
     state.snapshot = snapshot;
     state.phase = "success";
     state.selectedId = rankSignals(snapshot.senales)[0]?.id ?? null;
     elements.snapshotDate.dateTime = snapshot.fecha;
     elements.snapshotDate.textContent = formatDate(snapshot.fecha, { dateStyle: "long" });
-    elements.sourceBadge.textContent = `Supabase · contrato ${snapshot.contract_version}`;
-    elements.sourceBadge.title = `${DATA_SOURCE.url} · ${DATA_SOURCE.security}`;
+    renderSourceBadge({
+      ...sourceMeta,
+      source: { ...sourceMeta.source, contract_version: snapshot.contract_version },
+    });
     renderDashboard();
   } catch (error) {
     if (error instanceof NoSignalsError) {

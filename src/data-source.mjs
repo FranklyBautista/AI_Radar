@@ -6,6 +6,15 @@ export const DATA_SOURCE = Object.freeze({
   security: "La clave de Supabase permanece en el servidor.",
 });
 
+export const DEMO_DATA_SOURCE = Object.freeze({
+  kind: "local-demo-fallback",
+  url: "/data/daily/2026-07-18.json",
+  contract: "./contracts/ai-radar-signal.schema.json",
+  activation:
+    "snapshot local de solo lectura cuando la API no responde, no tiene runs o devuelve datos inválidos",
+  security: "El snapshot está versionado y no contiene credenciales.",
+});
+
 const STATUS_VALUES = new Set([
   "nueva",
   "activa",
@@ -102,19 +111,55 @@ export function validateSnapshot(snapshot) {
   return snapshot;
 }
 
-export async function loadSnapshot({ fetchImpl = fetch, signal } = {}) {
-  const response = await fetchImpl(DATA_SOURCE.url, {
-    cache: "no-store",
-    headers: { accept: "application/json" },
-    signal,
-  });
+export async function loadSnapshot({
+  fetchImpl = fetch,
+  signal,
+  allowDemoFallback = false,
+  onSource,
+} = {}) {
+  let primaryError;
 
-  if (!response.ok) {
-    if (response.status === 404) {
-      throw new NoSignalsError("Todavía no hay señales disponibles");
+  try {
+    const response = await fetchImpl(DATA_SOURCE.url, {
+      cache: "no-store",
+      headers: { accept: "application/json" },
+      signal,
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new NoSignalsError("Todavía no hay señales disponibles");
+      }
+      throw new Error(`No se pudo cargar el snapshot (${response.status})`);
     }
-    throw new Error(`No se pudo cargar el snapshot (${response.status})`);
+
+    const snapshot = validateSnapshot(await response.json());
+    onSource?.({ kind: "live", source: DATA_SOURCE });
+    return snapshot;
+  } catch (error) {
+    primaryError = error instanceof Error ? error : new Error("Error de datos desconocido");
   }
 
-  return validateSnapshot(await response.json());
+  if (!allowDemoFallback) throw primaryError;
+
+  try {
+    const response = await fetchImpl(DEMO_DATA_SOURCE.url, {
+      cache: "no-store",
+      headers: { accept: "application/json" },
+      signal,
+    });
+    if (!response.ok) {
+      throw new Error(`No se pudo cargar la demo local (${response.status})`);
+    }
+
+    const snapshot = validateSnapshot(await response.json());
+    onSource?.({
+      kind: "demo",
+      source: DEMO_DATA_SOURCE,
+      reason: primaryError.message,
+    });
+    return snapshot;
+  } catch {
+    throw primaryError;
+  }
 }
